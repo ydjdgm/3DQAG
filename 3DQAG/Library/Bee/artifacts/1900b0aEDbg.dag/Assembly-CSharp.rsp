@@ -356,6 +356,7 @@
 "Assets/QuarterView 3D Action BE5/ReadMe/Scripts/ReadmeBE5.cs"
 "Assets/Scripts/Item.cs"
 "Assets/Scripts/MainCamera.cs"
+"Assets/Scripts/Orbit.cs"
 "Assets/Scripts/Player.cs"
 -langversion:9.0
 

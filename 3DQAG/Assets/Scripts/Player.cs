@@ -7,6 +7,17 @@ public class Player : MonoBehaviour
     public float moveSpeed;//플레이어 기본 이동속도
     public GameObject[] weapons;
     public bool[] hasWeapons;
+    public GameObject[] grenades;
+
+    public int ammo;
+    public int coin;
+    public int health;
+    public int hasGrenades;
+
+    public int maxAmmo;
+    public int maxCoin;
+    public int maxHealth;
+    public int maxHasGrenades;
 
     float hAxis;
     float vAxis;
@@ -175,6 +186,47 @@ public class Player : MonoBehaviour
         {
             isJump = false;
             animator.SetBool("isJump", false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Item")
+        {
+            Item item = other.GetComponent<Item>();
+            switch(item.type)
+            {
+                case Item.Type.Ammo:
+                    ammo += item.value;
+                    if(ammo > maxAmmo)
+                    {
+                        ammo = maxAmmo;
+                    }
+                    break;
+                case Item.Type.Coin:
+                    coin += item.value;
+                    if (coin > maxCoin)
+                    {
+                        coin = maxCoin;
+                    }
+                    break;
+                case Item.Type.Heart:
+                    health += item.value;
+                    if (health > maxHealth)
+                    {
+                        health = maxHealth;
+                    }
+                    break;
+                case Item.Type.Grenade:
+                    grenades[hasGrenades].SetActive(true);
+                    hasGrenades += item.value;
+                    if (hasGrenades > maxHasGrenades)
+                    {
+                        hasGrenades = maxHasGrenades;
+                    }
+                    break;
+            }
+            Destroy(other.gameObject);
         }
     }
 
