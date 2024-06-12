@@ -28,10 +28,12 @@ public class Player : MonoBehaviour
     bool down1;
     bool down2;
     bool down3;
+    bool mouseLeftDown;
 
     bool isJump;
     bool isDodge;
     bool isSwap;
+    bool isFireReady = true;
 
     Vector3 moveVec;//플레이어 이동 백터
     Vector3 dodgeVec;//Dodge시 백터
@@ -40,8 +42,9 @@ public class Player : MonoBehaviour
     Animator animator;
 
     GameObject nearObject;
-    GameObject equipWeapon;
+    Weapon equipWeapon;
     int weaponIndex = -1;
+    float fireDelay;
 
     private void Awake()
     {
@@ -58,6 +61,7 @@ public class Player : MonoBehaviour
         Dodge();
         Interaction();
         Swap();
+        Attack();
     }
 
     void GetInput()
@@ -70,6 +74,7 @@ public class Player : MonoBehaviour
         down1 = Input.GetButtonDown("Swap1");
         down2 = Input.GetButtonDown("Swap2");
         down3 = Input.GetButtonDown("Swap3");
+        mouseLeftDown = Input.GetButtonDown("Fire1");
     }
 
     void Move()
@@ -100,6 +105,23 @@ public class Player : MonoBehaviour
             isJump = true;
             animator.SetBool("isJump", true);
             animator.SetTrigger("doJump");
+        }
+    }
+
+    void Attack()
+    {
+        if ( equipWeapon == null)
+        {
+            return;
+        }
+        fireDelay += Time.deltaTime;
+        isFireReady = equipWeapon.rate < fireDelay;
+
+        if (mouseLeftDown && isFireReady && !isDodge && !isJump && !isSwap)
+        {
+            equipWeapon.Use();
+            animator.SetTrigger("doSwing");
+            fireDelay = 0;
         }
     }
 
@@ -164,10 +186,10 @@ public class Player : MonoBehaviour
         {
             if (equipWeapon != null)
             {
-                equipWeapon.SetActive(false);
+                equipWeapon.gameObject.SetActive(false);
             }
-            equipWeapon = weapons[weaponIndex];
-            equipWeapon.SetActive(true);
+            equipWeapon = weapons[weaponIndex].GetComponent<Weapon>();
+            equipWeapon.gameObject.SetActive(true);
 
             animator.SetTrigger("doSwap");
             isSwap = true;

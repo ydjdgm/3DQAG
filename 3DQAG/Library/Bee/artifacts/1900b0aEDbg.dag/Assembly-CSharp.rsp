@@ -358,6 +358,7 @@
 "Assets/Scripts/MainCamera.cs"
 "Assets/Scripts/Orbit.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/Weapon.cs"
 -langversion:9.0
 
 /deterministic
