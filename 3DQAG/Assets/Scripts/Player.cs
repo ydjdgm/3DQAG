@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     bool isSwap;
     bool isFireReady = true;
     bool isReload;
+    bool isBorder;
 
     Vector3 moveVec;//플레이어 이동 백터
     Vector3 dodgeVec;//Dodge시 백터
@@ -91,8 +92,11 @@ public class Player : MonoBehaviour
             moveVec = dodgeVec;
         }
 
-        transform.position += moveVec * moveSpeed * (isSwap || isReload ? 0.5f : 1f) * (LSDown ? 0.3f : 1f) * Time.deltaTime;//LSDown (걷기) 이 true면 * 0.3으로 이속 감소, reload 또는 swap시 이속 *0.5
-
+        if (!isBorder)
+        {
+            transform.position += moveVec * moveSpeed * (isSwap || isReload ? 0.5f : 1f) * (LSDown ? 0.3f : 1f) * Time.deltaTime;//LSDown (걷기) 이 true면 * 0.3으로 이속 감소, reload 또는 swap시 이속 *0.5
+        }
+        
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", LSDown);
     }
@@ -239,6 +243,17 @@ public class Player : MonoBehaviour
     void SwapOut()
     {
         isSwap = false;
+    }
+
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.green);
+        isBorder = Physics.Raycast(transform.position, transform.forward, 5, LayerMask.GetMask("Wall"));
+    }
+
+    private void FixedUpdate()
+    {
+        StopToWall();
     }
 
     private void OnCollisionEnter(Collision collision)
