@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed;//ÇÃ·¹ÀÌ¾î ±âº» ÀÌµ¿¼Óµµ
+    public float moveSpeed;//í”Œë ˆì´ì–´ ê¸°ë³¸ ì´ë™ì†ë„
     public GameObject[] weapons;
     public bool[] hasWeapons;
     public GameObject[] grenades;
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     bool down1;
     bool down2;
     bool down3;
-    bool mouseLeftDown;
+    bool mouseLeft;
     bool rDown;
 
     bool isJump;
@@ -39,8 +39,8 @@ public class Player : MonoBehaviour
     bool isReload;
     bool isBorder;
 
-    Vector3 moveVec;//ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¹éÅÍ
-    Vector3 dodgeVec;//Dodge½Ã ¹éÅÍ
+    Vector3 moveVec;//í”Œë ˆì´ì–´ ì´ë™ ë°±í„°
+    Vector3 dodgeVec;//Dodgeì‹œ ë°±í„°
 
     Rigidbody rb;
     Animator animator;
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         down1 = Input.GetButtonDown("Swap1");
         down2 = Input.GetButtonDown("Swap2");
         down3 = Input.GetButtonDown("Swap3");
-        mouseLeftDown = Input.GetButton("Fire1");
+        mouseLeft = Input.GetButton("Fire1");
         rDown = Input.GetButtonDown("Reload");
     }
 
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
 
         if (!isBorder)
         {
-            transform.position += moveVec * moveSpeed * (isSwap || isReload ? 0.5f : 1f) * (LSDown ? 0.3f : 1f) * Time.deltaTime;//LSDown (°È±â) ÀÌ true¸é * 0.3À¸·Î ÀÌ¼Ó °¨¼Ò, reload ¶Ç´Â swap½Ã ÀÌ¼Ó *0.5
+            transform.position += moveVec * moveSpeed * (isSwap || isReload ? 0.5f : 1f) * (LSDown ? 0.3f : 1f) * Time.deltaTime;//LSDown (ê±·ê¸°) ì´ trueë©´ * 0.3ìœ¼ë¡œ ì´ì† ê°ì†Œ, reload ë˜ëŠ” swapì‹œ ì´ì† *0.5
         }
         
         animator.SetBool("isRun", moveVec != Vector3.zero);
@@ -103,11 +103,11 @@ public class Player : MonoBehaviour
 
     void Turn()
     {
-        transform.LookAt(transform.position + moveVec);//ÇÃ·¹ÀÌ¾î°¡ ¹Ù¶óº¸´Â ¹æÇâ ¹Ù²Ù±â
+        transform.LookAt(transform.position + moveVec);//í”Œë ˆì´ì–´ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥ ë°”ê¾¸ê¸°
 
-        if (mouseLeftDown)
+        if (mouseLeft)
         {
-            Ray ray = followCam.ScreenPointToRay(Input.mousePosition);//¸¶¿ì½º·Î ¹æÇâ ¹Ù²Ù±â
+            Ray ray = followCam.ScreenPointToRay(Input.mousePosition);//ë§ˆìš°ìŠ¤ë¡œ ë°©í–¥ ë°”ê¾¸ê¸°
             RaycastHit rayHit;
             if (Physics.Raycast(ray, out rayHit, 100))
             {
@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (spaceDown && !isJump && !isSwap && moveVec == Vector3.zero && !isDodge)//DodgeÁßÀÌ ¾Æ´Ï°í, ¿òÁ÷ÀÌÁö ¾ÊÀ» ¶§¸¸ Jump°¡ ³ª°¨
+        if (spaceDown && !isJump && !isSwap && moveVec == Vector3.zero && !isDodge)//Dodgeì¤‘ì´ ì•„ë‹ˆê³ , ì›€ì§ì´ì§€ ì•Šì„ ë•Œë§Œ Jumpê°€ ë‚˜ê°
         {
             rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
             isJump = true;
@@ -138,7 +138,7 @@ public class Player : MonoBehaviour
         fireDelay += Time.deltaTime;
         isFireReady = equipWeapon.rate < fireDelay;
 
-        if (mouseLeftDown && isFireReady && !isDodge && !isJump && !isSwap)
+        if (mouseLeft && isFireReady && !isDodge && !isJump && !isSwap)
         {
             equipWeapon.Use();
             animator.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
@@ -170,10 +170,10 @@ public class Player : MonoBehaviour
 
     void Dodge()
     {
-        if (spaceDown && !isDodge && !isJump && !isSwap && moveVec != Vector3.zero)//¿òÁ÷ÀÌ°í ÀÖÀ» ¶§¸¸ Jump´ë½Å Dodge°¡ ³ª°¨
+        if (spaceDown && !isDodge && !isJump && !isSwap && moveVec != Vector3.zero)//ì›€ì§ì´ê³  ìˆì„ ë•Œë§Œ JumpëŒ€ì‹  Dodgeê°€ ë‚˜ê°
         {
             dodgeVec = moveVec;
-            moveSpeed *= 2f;//´ë½Ã ½Ã ¼Óµµ °¡¼Ó
+            moveSpeed *= 2f;//ëŒ€ì‹œ ì‹œ ì†ë„ ê°€ì†
             animator.SetTrigger("doDodge");
             isDodge = true;
             Invoke("DodgeOut", 0.5f);
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
     }
     void DodgeOut()
     {
-        moveSpeed *= 0.5f;//°¡¼ÓµÈ ¼Óµµ ´Ù½Ã ¿ø·¡´ë·Î
+        moveSpeed *= 0.5f;//ê°€ì†ëœ ì†ë„ ë‹¤ì‹œ ì›ë˜ëŒ€ë¡œ
         isDodge = false;
     }
 
