@@ -5115,6 +5115,7 @@ MonoBehaviour:
   - {fileID: 2009295731}
   - {fileID: 1033500809}
   followCam: {fileID: 963194227}
+  grenadeObj: {fileID: 7851165168084605775, guid: 4baf1b17c6cb1224280745ca4c1639c3, type: 3}
   ammo: 99
   coin: 0
   health: 99
@@ -21886,6 +21887,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 320723505}
   orbitSpeed: 20
+--- !u!1001 &2066672878
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.9070196
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5000019
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.826118
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859564166875924123, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532244930476445107, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
+      propertyPath: m_Name
+      value: Weapon Grenade
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 24f328ce22d431443b159bf9cd6d6e12, type: 3}
 --- !u!1001 &2089226592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22043,3 +22101,4 @@ SceneRoots:
   - {fileID: 34288453}
   - {fileID: 6328601207741131530}
   - {fileID: 277175681}
+  - {fileID: 2066672878}
