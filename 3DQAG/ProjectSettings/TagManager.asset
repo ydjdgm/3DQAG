@@ -12,6 +12,7 @@ TagManager:
   - Bullet
   - Enemy
   - DeadEnemy
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - Wall
   - Enemy
   - DeadEnemy
-  - 
+  - EnemyBullet
   - 
   - 
   - 
