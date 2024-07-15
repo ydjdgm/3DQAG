@@ -342,13 +342,35 @@ public class Player : MonoBehaviour
             {
                 Bullet enemyBullet = other.GetComponent<Bullet>();
                 health -= enemyBullet.damage;
-                if(other.GetComponent<Rigidbody>() != null)
-                {
-                    Destroy(other.gameObject);
-                }
+
                 StartCoroutine(OnDamage());
             }
+            if(other.name == "Taunt Melee Area")
+            {
+                StartCoroutine(KnockBack(other.transform.position));
+            }
+            if (other.GetComponent<Rigidbody>() != null)
+            {
+                Destroy(other.gameObject);
+            }
         }
+    }
+
+    IEnumerator KnockBack(Vector3 other)
+    {
+        Vector3 knockBackVec = transform.position - other;
+        knockBackVec.y = 0;
+        if (knockBackVec.x != 0 && knockBackVec.z != 0)
+        {
+            rb.AddForce(knockBackVec * 10, ForceMode.Impulse);
+        }
+        else//넉백 로직 나중에 함 봐야됨
+        {
+            rb.AddForce(transform.forward * -25, ForceMode.Impulse);
+        }
+
+        yield return new WaitForSeconds(1f);
+        rb.velocity = Vector3.zero;
     }
 
     IEnumerator OnDamage()

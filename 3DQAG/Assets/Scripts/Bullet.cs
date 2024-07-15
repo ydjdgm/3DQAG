@@ -6,11 +6,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public bool isMelee;
+    public bool isRock;
     public int damage;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor" && !isMelee)
+        if (collision.gameObject.tag == "Floor" && !isMelee && !isRock)
         {
             Destroy(gameObject, 3f);
         }

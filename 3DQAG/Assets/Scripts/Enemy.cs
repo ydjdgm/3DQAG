@@ -6,7 +6,7 @@ using UnityEngine.Assertions.Must;
 
 public class Enemy : MonoBehaviour
 {
-    public enum Type { A, B, C };
+    public enum Type { A, B, C, D };
     public Type enemyType;
 
     public float maxHp;
@@ -14,14 +14,15 @@ public class Enemy : MonoBehaviour
     public Transform target;
     public bool isChase;
     public bool isAttack;
+    public bool isDead;
     public BoxCollider meleeArea;
     public GameObject bullet;
 
-    Rigidbody rb;
-    BoxCollider BoxCol;
-    Material mat;
-    NavMeshAgent nav;
-    Animator anim;
+    protected Rigidbody rb;
+    protected BoxCollider BoxCol;
+    protected MeshRenderer[] meshs;
+    protected NavMeshAgent nav;
+    protected Animator anim;
 
 
 
@@ -30,18 +31,21 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         BoxCol = GetComponent<BoxCollider>();
-        mat = GetComponentInChildren<MeshRenderer>().material;
+        meshs = GetComponentsInChildren<MeshRenderer>();
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
 
-        Invoke("ChaseStart", 2);
+        if(enemyType != Type.D)
+        {
+            Invoke("ChaseStart", 2);
+        }
     }
 
     private void Update()
     {
-        if (nav.enabled)
+        if (nav.enabled && enemyType != Type.D)
         {
-            nav.SetDestination(target.transform.position);
+            nav.SetDestination(target.position);
             nav.isStopped = !isChase;
         }
     }
@@ -54,34 +58,37 @@ public class Enemy : MonoBehaviour
 
     void Targeting()
     {
-        float targetRedius = 0;
-        float targetRange = 0;
-
-        switch (enemyType)
+        if (!isDead && enemyType != Type.D)
         {
-            case Type.A:
-                targetRedius = 1.5f;
-                targetRange = 3f;
-                break;
-            case Type.B:
-                targetRedius = 1f;
-                targetRange = 12f;
-                break;
-            case Type.C:
-                targetRedius = 0.5f;
-                targetRange = 25f;
-                break;
-        }
+            float targetRedius = 0;
+            float targetRange = 0;
 
-        RaycastHit[] rayHits = 
-            Physics.SphereCastAll(transform.position, 
-                                        targetRedius, 
-                                        transform.forward, 
-                                        targetRange, 
-                                        LayerMask.GetMask("Player"));
-        if (rayHits.Length > 0 && !isAttack)
-        {
-            StartCoroutine(Attack());
+            switch (enemyType)
+            {
+                case Type.A:
+                    targetRedius = 1.5f;
+                    targetRange = 3f;
+                    break;
+                case Type.B:
+                    targetRedius = 1f;
+                    targetRange = 12f;
+                    break;
+                case Type.C:
+                    targetRedius = 0.5f;
+                    targetRange = 25f;
+                    break;
+            }
+
+            RaycastHit[] rayHits =
+                Physics.SphereCastAll(transform.position,
+                                            targetRedius,
+                                            transform.forward,
+                                            targetRange,
+                                            LayerMask.GetMask("Player"));
+            if (rayHits.Length > 0 && !isAttack)
+            {
+                StartCoroutine(Attack());
+            }
         }
     }
 
@@ -176,16 +183,27 @@ public class Enemy : MonoBehaviour
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
-        mat.color = Color.red;
+        foreach(MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.red;
+        }
+
         yield return new WaitForSeconds(0.1f);
 
         if(curHp > 0)
         {
-            mat.color = Color.white;
+            foreach(MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.white;
+            }
         }
         else
         {
-            mat.color = Color.gray;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.gray;
+            }
+            isDead = true;
             gameObject.layer = 14;
             gameObject.tag = "DeadEnemy";
             isChase = false;
@@ -208,8 +226,10 @@ public class Enemy : MonoBehaviour
                 rb.AddForce(reactVec * 5, ForceMode.Impulse);
             }
 
-
-            Destroy(gameObject, 1f);
+            if(enemyType != Type.D)
+            {
+                Destroy(gameObject, 1f);
+            }
         }
     }
 }
