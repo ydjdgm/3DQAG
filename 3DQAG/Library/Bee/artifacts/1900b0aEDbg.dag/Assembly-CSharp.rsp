@@ -363,6 +363,7 @@
 "Assets/Scripts/BossRock.cs"
 "Assets/Scripts/Bullet.cs"
 "Assets/Scripts/Enemy.cs"
+"Assets/Scripts/GameManager.cs"
 "Assets/Scripts/Grenade.cs"
 "Assets/Scripts/Item.cs"
 "Assets/Scripts/MainCamera.cs"
