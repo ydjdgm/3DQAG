@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - DeadEnemy
   - EnemyBullet
+  - Shop
   layers:
   - Default
   - TransparentFX

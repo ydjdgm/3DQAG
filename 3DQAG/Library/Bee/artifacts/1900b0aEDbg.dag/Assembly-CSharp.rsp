@@ -369,6 +369,7 @@
 "Assets/Scripts/Missile.cs"
 "Assets/Scripts/Orbit.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/Shop.cs"
 "Assets/Scripts/Weapon.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
