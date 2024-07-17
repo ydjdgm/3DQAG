@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
 
     public float maxHp;
     public float curHp;
+    public int score;
+    public GameObject[] coins;
+    public GameManager gameManager;
     public Transform target;
     public bool isChase;
     public bool isAttack;
@@ -209,6 +212,25 @@ public class Enemy : MonoBehaviour
             isChase = false;
             nav.enabled = false;
             anim.SetTrigger("doDie");
+            Player player = target.GetComponent<Player>();
+            player.score += score;
+            int ranCoin = Random.Range(0, 3);
+            Instantiate(coins[ranCoin], transform.position, Quaternion.identity);
+            switch (enemyType) {
+                case Type.A:
+                    gameManager.enemyCntA--;
+                    break;
+                case Type.B:
+                    gameManager.enemyCntB--;
+                    break;
+                case Type.C:
+                    gameManager.enemyCntC--;
+                    break;
+                case Type.D:
+                    gameManager.enemyCntD--;
+                    break;
+            }
+
 
             if (isGrenade)
             {
@@ -225,11 +247,7 @@ public class Enemy : MonoBehaviour
                 reactVec += Vector3.up;
                 rb.AddForce(reactVec * 5, ForceMode.Impulse);
             }
-
-            if(enemyType != Type.D)
-            {
-                Destroy(gameObject, 1f);
-            }
+            Destroy(gameObject, 1f);
         }
     }
 }

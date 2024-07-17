@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public GameObject[] grenades;
     public Camera followCam;
     public GameObject grenadeObj;
+    public GameManager manager;
 
     public int ammo;
     public int coin;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
     bool isReload;
     bool isBorder;
     bool isDamaged;
+    bool isDead;
     public bool isShop;
 
     Vector3 moveVec;//플레이어 이동 백터
@@ -97,7 +99,11 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        if (isDead)
+        {
+            return;
+        }
+            moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
         if(isDodge)
         {
@@ -115,6 +121,10 @@ public class Player : MonoBehaviour
 
     void Turn()
     {
+        if (isDead)
+        {
+            return;
+        }
         transform.LookAt(transform.position + moveVec);//플레이어가 바라보는 방향 바꾸기
 
         if (mouseLeft)
@@ -132,6 +142,10 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (spaceDown && !isJump && !isSwap && moveVec == Vector3.zero && !isDodge && !isShop)//Dodge중이 아니고, 움직이지 않을 때만 Jump가 나감
         {
             rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
@@ -143,6 +157,10 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
+        if (isDead)
+        {
+            return;
+        }
         if ( equipWeapon == null)
         {
             return;
@@ -160,6 +178,10 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (isShop)
         {
             return;
@@ -189,6 +211,10 @@ public class Player : MonoBehaviour
 
     void Grenade()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (isShop)
         {
             return;
@@ -219,6 +245,10 @@ public class Player : MonoBehaviour
 
     void Dodge()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (spaceDown && !isDodge && !isJump && !isSwap && moveVec != Vector3.zero && !isShop)//움직이고 있을 때만 Jump대신 Dodge가 나감
         {
             dodgeVec = moveVec;
@@ -236,6 +266,10 @@ public class Player : MonoBehaviour
 
     void Interaction()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (eDown && nearObject != null)
         {
             if(nearObject.tag == "Weapon")
@@ -255,6 +289,10 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (isShop)
         {
             return;
@@ -366,7 +404,10 @@ public class Player : MonoBehaviour
             {
                 Bullet enemyBullet = other.GetComponent<Bullet>();
                 health -= enemyBullet.damage;
-
+                if (health <= 0 && !isDead)
+                {
+                    OnDie();
+                }
                 StartCoroutine(OnDamage());
             }
             if(other.name == "Taunt Melee Area")
@@ -378,6 +419,12 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+    void OnDie()
+    {
+        animator.SetTrigger("doDie");
+        isDead = true;
+        manager.GameOver();
     }
 
     IEnumerator KnockBack(Vector3 other)
