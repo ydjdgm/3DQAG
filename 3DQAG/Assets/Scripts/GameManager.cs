@@ -111,13 +111,9 @@ public class GameManager : MonoBehaviour
         if (stage % 5 == 0)
         {
             enemyCntD++;
-            Debug.Log("1");
             GameObject instantEnemy = Instantiate(enemy[3], spawnZone[2].position, spawnZone[2].rotation);
-            Debug.Log("2");
             Enemy enemyScript = instantEnemy.GetComponent<Enemy>();
-            Debug.Log("3");
             enemyScript.target = player.transform;
-            Debug.Log("4");
             enemyScript.gameManager = this;
             boss = instantEnemy.GetComponent<Boss>();
         }
@@ -172,7 +168,7 @@ public class GameManager : MonoBehaviour
         scoreTxt.text = string.Format("{0:n0}", player.score);
         stageTxt.text = "Stage" + stage;
 
-        //«√≈Ω ui
+        //ÌîåÌÉê ui
         int hour = (int)(playTime / 3600);
         int min = (int)((playTime - hour * 3600) / 60);
         int sec = (int)(playTime % 60);
@@ -181,7 +177,7 @@ public class GameManager : MonoBehaviour
         playerHp.text = player.health + " / " + player.maxHealth;
         playerCoin.text = string.Format("{0:n0}", player.coin);
 
-        //≈∫æ‡ ºˆ ui
+        //ÌÉÑÏïΩ Ïàò ui
         if (player.equipWeapon == null || player.equipWeapon.type == Weapon.Type.Melee)
         {
             playerAmmo.text = "- / " + player.ammo;
@@ -191,18 +187,18 @@ public class GameManager : MonoBehaviour
             playerAmmo.text = player.equipWeapon.curAmmo + " / " + player.ammo;
         }
 
-        //π´±‚ ui ≈ı∏Ìµµ
+        //Î¨¥Í∏∞ ui Ìà¨Î™ÖÎèÑ
         weapon1Img.color = new Color(1, 1, 1, player.hasWeapons[0] ? 1 : 0);
         weapon2Img.color = new Color(1, 1, 1, player.hasWeapons[1] ? 1 : 0);
         weapon3Img.color = new Color(1, 1, 1, player.hasWeapons[2] ? 1 : 0);
         weaponRImg.color = new Color(1, 1, 1, player.hasGrenades > 0 ? 1 : 0);
 
-        //≥≤¿∫ ∏ÛΩ∫≈Õ ºˆ
+        //ÎÇ®ÏùÄ Î™¨Ïä§ÌÑ∞ Ïàò
         enemyATxt.text = enemyCntA.ToString();
         enemyBTxt.text = enemyCntB.ToString();
         enemyCTxt.text = enemyCntC.ToString();
 
-        //∫∏Ω∫√º∑¬πŸ
+        //Î≥¥Ïä§Ï≤¥Î†•Î∞î
         if(boss != null)
         {
             bossHpGroup.anchoredPosition = Vector3.down * 30;
